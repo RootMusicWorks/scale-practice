@@ -1076,12 +1076,31 @@ function showDiagram() {
     if (scales[i].name === scaleName) { scaleIdx = i; break; }
   }
 
-  // ポジションインデックス
+  // ポジションインデックス（名前マッピング）
+  var POS_NAME_MAP_7 = {
+    '6弦 人差し指':  '6弦 人差し指(中指)スタート',
+    '6弦 中(薬)指':  '6弦 中指(薬指)スタート',
+    '6弦 小指':      '6弦 小指スタート',
+    '5弦 人差し指':  '5弦 人差し指(中指)スタート',
+    '5弦 中(薬)指':  '5弦 中指(薬指)スタート',
+    '5弦 小指':      '5弦 小指スタート',
+    '4弦 人差し指':  '4弦 人差し指(中指)スタート'
+  };
+  var POS_NAME_MAP_5 = {
+    '6弦 人差し指':  '6弦 人差し指(中指)スタート',
+    '6弦 小指':      '6弦 小指スタート',
+    '5弦 人差し指':  '5弦 人差し指(中指)スタート',
+    '5弦 小指':      '5弦 小指スタート',
+    '4弦 人差し指':  '4弦 人差し指(中指)スタート'
+  };
   var sc = scales[scaleIdx];
+  var isPenta = sc.posOffsets.length === 5;
   var posNames = getPosNames(scaleIdx);
+  var posMap = isPenta ? POS_NAME_MAP_5 : POS_NAME_MAP_7;
+  var mappedPosStr = posMap[posStr] || posStr;
   var posIdx = 0;
   for (var i = 0; i < posNames.length; i++) {
-    if (posNames[i] === posStr) { posIdx = i; break; }
+    if (posNames[i] === mappedPosStr) { posIdx = i; break; }
   }
 
   currentDiagramKey = keyIdx;
