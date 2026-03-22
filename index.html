@@ -1064,10 +1064,15 @@ function showDiagram() {
   var scaleStr = document.getElementById('t-scale').textContent;
   var posStr = document.getElementById('t-position').textContent;
 
-  // キーインデックス
+  // キーインデックス（シャープ→フラット変換も考慮）
+  var KEY_ENHARMONIC = {
+    'C#': 'Db', 'D#': 'Eb', 'F#': 'Gb', 'G#': 'Ab', 'A#': 'Bb',
+    'Cb': 'B',  'Fb': 'E'
+  };
+  var keySearch = KEY_ENHARMONIC[keyStr] || keyStr;
   var keyIdx = 0;
   for (var i = 0; i < keys.length; i++) {
-    if (keys[i].label === keyStr) { keyIdx = i; break; }
+    if (keys[i].label === keyStr || keys[i].label === keySearch) { keyIdx = i; break; }
   }
 
   // スケールインデックス
@@ -1112,6 +1117,11 @@ function showDiagram() {
   document.body.style.overflow = 'hidden';
   setTimeout(function() {
     buildDiagramBoard(posIdx, keyIdx, scaleIdx);
+    // タイトルをお題のキー表記で上書き
+    var sc = scales[scaleIdx];
+    var posNames = getPosNames(scaleIdx);
+    document.getElementById('diagram-title').textContent =
+      sc.name + '  /  ' + keyStr + '  /  ' + posNames[posIdx];
   }, 50);
 }
 
